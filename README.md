@@ -2,11 +2,11 @@
 
 ## Struktur
 
-- `src/` – Firmware-Code für den Flightcontroller  
-- `extern/DatabaseManager/` – C++ Bibliothek zur Arbeit mit der Datenbank  
-- `extern/Database/` – Enthält die `database.json` (als Submodul)  
-- `data/` – wird beim UploadFS auf den ESP32 geschrieben  
-- `tools/` – Hilfsskripte (`upload_with_db.bat`, `monitor.bat`, …)
+- src/ – Firmware-Code für den Flightcontroller  
+- extern/DatabaseManager/ – C++ Bibliothek zur Arbeit mit der Datenbank  
+- extern/Database/ – Enthält die database.json (als Submodul)  
+- data/ – wird beim UploadFS auf den ESP32 geschrieben  
+- tools/ – Hilfsskripte (run.bat, monitor.bat, …)
 
 ## Klassendiagramm
 
