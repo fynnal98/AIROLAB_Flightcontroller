@@ -1,3 +1,6 @@
 [submodule "extern/DatabaseManager"]
 	path = extern/DatabaseManager
 	url = git@github.com:fynnal98/DatabaseManager.git
+[submodule "extern/Database"]
+	path = extern/Database
+	url = git@github.com:fynnal98/Database.git
