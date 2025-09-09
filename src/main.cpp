@@ -31,6 +31,10 @@ void setup() {
         return;
     }
 
+
+
+
+    
     const char* mode = doc["settings"]["system"]["mode"];
     int servo1 = doc["settings"]["hardware"]["servo_1"];
     float kp_roll = doc["settings"]["pid"]["roll"]["kp"];
