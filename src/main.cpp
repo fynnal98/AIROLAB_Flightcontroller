@@ -1,18 +1,31 @@
 #include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
+#include <FS.h>
+#include <LittleFS.h>
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+  delay(1000);
+
+  Serial.println("🔄 ESP32 gestartet!");
+  if (!LittleFS.begin()) {
+    Serial.println("LittleFS mount failed!");
+    return;
+  }
+
+  File f = LittleFS.open("/database.json", "r");
+  if (!f) {
+    Serial.println("database.json nicht gefunden!");
+    return;
+  }
+
+  Serial.println("database.json geöffnet");
+  while (f.available()) {
+    Serial.write(f.read());  
+  }
+  f.close();
+  Serial.println("\n--- ENDE DER DATEI ---");
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }
