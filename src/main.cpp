@@ -1,50 +1,27 @@
 #include <Arduino.h>
-#include <FS.h>
-#include <LittleFS.h>
-#include <ArduinoJson.h>
+#include "DatabaseManager.h"
+
+DatabaseManager db;
 
 void setup() {
     Serial.begin(115200);
-    delay(1000);
+    delay(500);
 
-    Serial.println("ESP32 is runnnning");
-
-    if (!LittleFS.begin()) {
-        Serial.println("LittleFS failed");
-        return;
-    }
-
-    File f = LittleFS.open("/database.json", "r");
-    if (!f) {
-        Serial.println("database.json nicht gefunden!");
-        return;
-    }
-
-    // JSON einlesen
-    StaticJsonDocument<2048> doc;  // Größe noch anpassen
-    DeserializationError err = deserializeJson(doc, f);
-    f.close();
-
-    if (err) {
-        Serial.print("JSON Fehler: ");
-        Serial.println(err.c_str());
-        return;
-    }
+    Serial.println("Flightcontroller starting...");
 
 
+    db.begin();
+    db.load("/database.json");
+    Serial.println("Database loaded.");
 
+    float kp = db.getFloat("settings.pid.roll.kp");
+    int servo1 = db.getInt("settings.hardware.servo_1");
+    const char* mode = db.getString("settings.system.mode");
 
-    
-    const char* mode = doc["settings"]["system"]["mode"];
-    int servo1 = doc["settings"]["hardware"]["servo_1"];
-    float kp_roll = doc["settings"]["pid"]["roll"]["kp"];
+    Serial.printf("PID Roll Kp: %.2f\n", kp);
+    Serial.printf("Servo 1: %d\n", servo1);
+    Serial.printf("System Mode: %s\n", mode);
 
-
-    //DEBUG
-    Serial.println("JSON geladen:");
-    Serial.printf("  System-Mode: %s\n", mode);
-    Serial.printf("  Servo 1 Pin: %d\n", servo1);
-    Serial.printf("  Roll Kp: %.3f\n", kp_roll);
 }
 
 void loop() {
