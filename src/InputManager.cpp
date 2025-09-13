@@ -1,0 +1,1 @@
+// bekommt über tcp daten und ändert sachen in der config
