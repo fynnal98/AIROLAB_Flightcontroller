@@ -11,7 +11,9 @@ class ConfigManager{
 public: 
     static ConfigManager& getInstance();
 
-    bool load(const char* path = "/config.json");
+    void printConfig();
+
+    bool load(const char* path);
 
     template<typename T> 
     T get(const String& path, T defaultValue = T()){

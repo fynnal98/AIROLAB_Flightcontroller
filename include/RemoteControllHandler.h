@@ -1,11 +1,11 @@
 #pragma once 
-#include "sbus.h"
+#include <sbus.h>
 
 namespace flightcontroller{
 
-class InputManager {
+class RemoteControlHandler {
 public: 
-    static InputManager& getInstance();
+    static RemoteControlHandler& getInstance();
 
     void begin(int rxPin);
     void update();
@@ -16,9 +16,9 @@ public:
 
 
 private:
-    InputManager();
-    InputManager(const InputManager&) = delete;
-    InputManager& operator = (const InputManager&) = delete;
+    RemoteControlHandler();
+    RemoteControlHandler(const RemoteControlHandler&) = delete;
+    RemoteControlHandler& operator = (const RemoteControlHandler&) = delete;
 
     bfs::SbusRx* m_sbus;
     bfs::SbusData m_data;

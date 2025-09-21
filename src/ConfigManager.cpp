@@ -33,6 +33,12 @@ bool ConfigManager::load(const char* path) {
     return true;
 }
 
+void ConfigManager::printConfig() {
+    LOG_INFO("Current Configuration:");
+    serializeJsonPretty(m_doc, Serial);
+    Serial.println();
+}
+
 /// @brief helps to pars
 /// @param path to the config parameter
 /// @return current

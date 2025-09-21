@@ -17,8 +17,10 @@
       "positionlights": 9
     }
   },
-  "imu": {
-    "i2c_sda": 8,
-    "i2c_scl": 9
-  }
+  "sensors": {
+    "settings": {
+      "sda": 21,
+      "scl": 22
+     }
+    }
 }
