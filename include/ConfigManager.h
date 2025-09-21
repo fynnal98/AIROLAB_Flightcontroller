@@ -27,7 +27,7 @@ private:
     ConfigManager(const ConfigManager&) = delete;
     ConfigManager& operator = (const ConfigManager&) = delete;
 
-    StaticJsonDocument<4096> m_doc;
+    StaticJsonDocument<4096> m_doc; 
     // JsonDocument m_doc; //ohne Speicher begrenzung, geht aber nur bis 1KB
     JsonVariant resolvePath(const String& path);
 };

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <ConfigManager.h>
+#include <InputManager.h>
 #include "Logger.h"
 
 using namespace flightcontroller;
@@ -8,19 +9,21 @@ void setup() {
     Serial.begin(115200);
     delay(500);
 
-    Serial.println("Flightcontroller starting...");
+    LOG_INFO("setup starting...");
 
-    flightcontroller::Logger::getInstance().setLevel(flightcontroller::E_LogLevel::DEBUG);
+    Logger::getInstance().setLevel(E_LogLevel::DEBUG);
 
     if (!ConfigManager::getInstance().load()){
         LOG_WARNING("Standart parameter used!");
     }
 
-    int sda = flightcontroller::ConfigManager::getInstance().get<int>("imu/i2c_sda", 8);
-    LOG_INFO("sda gesetzt: " + String(sda));
-
+    int sbus_rx = ConfigManager::getInstance().get<int>("sbus/settings/rx");
+    InputManager::getInstance().begin(sbus_rx); 
 }
 
 void loop() {
-    delay(2000);
+    InputManager::getInstance().update();
+    int16_t raw = InputManager::getInstance().getChannelRaw(1);
+    Serial.printf("Ch1 raw: %d\n", raw);
+    delay(20);
 }

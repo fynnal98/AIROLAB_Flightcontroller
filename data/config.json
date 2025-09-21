@@ -1,11 +1,24 @@
 {
-  "imu": {
-    "i2c_sda": 8,
-    "i2c_scl": 9
-  },
+  "version": 1.0,
   "wifi": {
     "ssid": "aerolab",
     "password": "12345678"
+  },
+  "sbus" : {
+    "setting": {
+      "rx":16
+    },
+    "assign" : {
+      "roll": 6,
+      "pitch": 4,
+      "throttle": 3,
+      "yaw" : 4,
+      "flaps": 8,
+      "positionlights": 9
+    }
+  },
+  "imu": {
+    "i2c_sda": 8,
+    "i2c_scl": 9
   }
-
 }
