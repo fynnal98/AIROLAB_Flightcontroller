@@ -1,7 +1,8 @@
 #include <Arduino.h>
-#include "DatabaseManager.h"
+#include <ConfigManager.h>
+#include "Logger.h"
 
-DatabaseManager db;
+using namespace flightcontroller;
 
 void setup() {
     Serial.begin(115200);
@@ -9,18 +10,14 @@ void setup() {
 
     Serial.println("Flightcontroller starting...");
 
+    flightcontroller::Logger::getInstance().setLevel(flightcontroller::E_LogLevel::DEBUG);
 
-    db.begin();
-    db.load("/database.json");
-    Serial.println("Database loaded.");
+    if (!ConfigManager::getInstance().load()){
+        LOG_WARNING("Standart parameter used!");
+    }
 
-    float kp = db.getFloat("settings.pid.roll.kp");
-    int servo1 = db.getInt("settings.hardware.servo_1");
-    const char* mode = db.getString("settings.system.mode");
-
-    Serial.printf("PID Roll Kp: %.2f\n", kp);
-    Serial.printf("Servo 1: %d\n", servo1);
-    Serial.printf("System Mode: %s\n", mode);
+    int sda = flightcontroller::ConfigManager::getInstance().get<int>("imu/i2c_sda", 8);
+    LOG_INFO("sda gesetzt: " + String(sda));
 
 }
 

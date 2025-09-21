@@ -1,0 +1,11 @@
+{
+  "imu": {
+    "i2c_sda": 8,
+    "i2c_scl": 9
+  },
+  "wifi": {
+    "ssid": "aerolab",
+    "password": "12345678"
+  }
+
+}
