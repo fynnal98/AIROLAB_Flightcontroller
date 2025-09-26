@@ -8,14 +8,19 @@ MPU6050Handler::MPU6050Handler()
       m_gyroX(0), m_gyroY(0), m_gyroZ(0), m_tempRaw(0) {}
 
 
-MPU6050Handler& MPU6050Handler::getInstance() {
-    static MPU6050Handler instance;
+std::shared_ptr<MPU6050Handler> MPU6050Handler::GetInstance() {
+    static std::shared_ptr<MPU6050Handler> instance = nullptr;
+    if (!instance)
+        instance = std::shared_ptr<MPU6050Handler>(new MPU6050Handler());
     return instance;
 }
 
 
 bool MPU6050Handler::begin(int sdaPin, int sclPin) {
-    Wire.begin(sdaPin, sclPin);
+    if(!Wire.begin(sdaPin, sclPin)){
+        LOG_ERROR("I2C init failed!");
+        return false;
+    }
     Wire.beginTransmission(MPU6050_ADDR);
     Wire.write(REG_PWR_MGMT_1);
     Wire.write(0);

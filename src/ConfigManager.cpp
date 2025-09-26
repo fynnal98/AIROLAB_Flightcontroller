@@ -4,7 +4,7 @@ namespace flightcontroller {
 
 ConfigManager::ConfigManager() {}
 
-ConfigManager& ConfigManager::getInstance() {
+ConfigManager& ConfigManager::GetInstance() {
     static ConfigManager instance;
     return instance;
 }

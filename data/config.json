@@ -6,7 +6,7 @@
   },
   "sbus" : {
     "setting": {
-      "rx":16
+      "rx":1
     },
     "assign" : {
       "roll": 6,
@@ -19,8 +19,9 @@
   },
   "sensors": {
     "settings": {
-      "sda": 21,
-      "scl": 22
+      "sda": 8,
+      "scl": 9,
+      "seaLevel": 1013.25
      }
     }
 }

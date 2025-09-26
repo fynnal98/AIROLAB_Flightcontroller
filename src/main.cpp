@@ -1,70 +1,57 @@
 #include <Arduino.h>
-#include "BMP280Handler.h"
 #include "ConfigManager.h"
-#include "RemoteControllHandler.h"
 #include "Logger.h"
-#include "MPU6050Handler.h"
+#include "RemoteControllHandler.h"
+#include "SensorManager.h"
 
 
 using namespace flightcontroller;
 
 void setup() {
-    Serial.begin(115200);
+    Serial.begin(115200); 
     delay(500);
+
 
     LOG_INFO("setup starting...");
 
     //Logger
-    Logger::getInstance().setLevel(E_LogLevel::DEBUG);
+    Logger::GetInstance().SetLevel(E_LogLevel::DEBUG);
 
     //ConfigManager
-    if (!ConfigManager::getInstance().load("/config.json")){
+    if (!ConfigManager::GetInstance().load("/config.json")){
         LOG_WARNING("Standart parameter used!");
     }
-    ConfigManager::getInstance().printConfig();
+    ConfigManager::GetInstance().printConfig();
 
     //RemoteControlHandler
-    int sbus_rx = ConfigManager::getInstance().get<int>("sbus/settings/rx");
-    RemoteControlHandler::getInstance().begin(sbus_rx); 
+    int sbus_rx = ConfigManager::GetInstance().get<int>("sbus/settings/rx");
+    RemoteControlHandler::GetInstance().begin(sbus_rx); 
 
     //Sensorik
-    int sda = ConfigManager::getInstance().get<int>("sensors/settings/sda");
-    int scl = ConfigManager::getInstance().get<int>("sensors/settings/scl");
-    if (!MPU6050Handler::getInstance().begin(sda, scl)) {
-        LOG_ERROR("MPU6050 init failed!");
-    }
-    if (!BMP280Handler::getInstance().begin(sda, scl)) {
-        LOG_ERROR("BMP280 init failed!");
-    }
+    int sda = ConfigManager::GetInstance().get<int>("sensors/settings/sda");
+    int scl = ConfigManager::GetInstance().get<int>("sensors/settings/scl");
+    float seaLevel = ConfigManager::GetInstance().get<float>("sensors/settings/seaLevel");
+    SensorManager::GetInstance()->begin(sda, scl, seaLevel);
 
     LOG_INFO("setup done___________________________");
 }
 
 void loop() {
     //RemoteControlHandler 
-    RemoteControlHandler::getInstance().update();
-    //debug
-    int16_t raw = RemoteControlHandler::getInstance().getChannelRaw(1);
-    Serial.printf("Ch1 raw: %d\n", raw);
-    delay(20);
+    RemoteControlHandler::GetInstance().update();
 
-    //MPU6050Handler
-    MPU6050Handler::getInstance().update();
-    //debug
-    Serial.printf("AccelX: %d, AccelY: %d, AccelZ: %d, MPU TEMP: %.2f\n", 
-                  MPU6050Handler::getInstance().getAccelX(),
-                  MPU6050Handler::getInstance().getAccelY(),
-                  MPU6050Handler::getInstance().getAccelZ(),
-                  MPU6050Handler::getInstance().getTemperature());
+    //Sensorik
+    auto sensorManager = SensorManager::GetInstance();
 
-    //BMP280Handler
-    BMP280Handler::getInstance().update(1010.0f); //aktuelle Meereshöhe in hPa angeben
-    //debug
-    Serial.printf("BMP280 Temp: %.2f C | Pressure: %.2f hPa | Altitude: %.2f m\n",
-                  BMP280Handler::getInstance().getTemperature(),
-                  BMP280Handler::getInstance().getPressure() / 100.0f,
-                  BMP280Handler::getInstance().getAltitude());
+    sensorManager->update();
+    auto gyroX = sensorManager->GetMPU()->GetGyroX();
+    auto gyroY = sensorManager->GetMPU()->GetGyroY();
+    auto gyroZ = sensorManager->GetMPU()->GetGyroZ();
 
-    delay(100);
+    LOG_DEBUG("GYRO| X: " + String(gyroX) + " Y: " + String(gyroY) + " Z: " + String(gyroZ));
+
+
+
+    delay(50);
 
 }

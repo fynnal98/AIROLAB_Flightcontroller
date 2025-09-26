@@ -2,43 +2,43 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include "Logger.h"
-
+#include <memory>
 namespace flightcontroller{
 
 class MPU6050Handler{
 public:
-    static MPU6050Handler& getInstance();
+    static std::shared_ptr<MPU6050Handler> GetInstance();
 
     static constexpr float TEMP_SCALE  = 340.0f;
     static constexpr float TEMP_OFFSET = 36.53f;
-    float getTemperature() const {
+    float GetTemperature() const {
         return (m_tempRaw / TEMP_SCALE) + TEMP_OFFSET;
     }
     
     bool begin(int sdaPin, int sclPin);
     void update();
 
-    int16_t getAccelX() const {
+    int16_t GetAccelX() const {
         return m_accelX;
     }
 
-    int16_t getAccelY() const {
+    int16_t GetAccelY() const {
         return m_accelY;
     }
 
-    int16_t getAccelZ() const {
+    int16_t GetAccelZ() const {
         return m_accelZ;
     }
 
-    int16_t getGyroX() const {
+    int16_t GetGyroX() const {
         return m_gyroX;
     }
 
-    int16_t getGyroY() const {
+    int16_t GetGyroY() const {
         return m_gyroY;
     }
 
-    int16_t getGyroZ() const {
+    int16_t GetGyroZ() const {
         return m_gyroZ;
     }
 

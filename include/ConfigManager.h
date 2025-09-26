@@ -9,7 +9,7 @@ namespace flightcontroller {
 
 class ConfigManager{
 public: 
-    static ConfigManager& getInstance();
+    static ConfigManager& GetInstance();
 
     void printConfig();
 

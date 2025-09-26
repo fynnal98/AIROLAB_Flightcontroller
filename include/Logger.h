@@ -18,16 +18,16 @@ enum class E_LogLevel {
 class Logger {
 public:
     //Singleton
-    static Logger& getInstance() {
+    static Logger& GetInstance() {
         static Logger instance;
         return instance;
     }
     /// Set the LogLevel 
-    void setLevel(E_LogLevel level) { 
+    void SetLevel(E_LogLevel level) { 
         m_level = level; 
     }
 
-    void log(E_LogLevel level, const char* file, int line, const char* func, const String& msg) {
+    void Log(E_LogLevel level, const char* file, int line, const char* func, const String& msg) {
         if (level > m_level) return;
 
         String levelStr;
@@ -72,9 +72,9 @@ private:
 };
 
 // Convenience-Makros
-#define LOG_ERROR(msg)   flightcontroller::Logger::getInstance().log(flightcontroller::E_LogLevel::ERROR, __FILE__, __LINE__, __func__, msg)
-#define LOG_WARNING(msg) flightcontroller::Logger::getInstance().log(flightcontroller::E_LogLevel::WARNING, __FILE__, __LINE__, __func__, msg)
-#define LOG_INFO(msg)    flightcontroller::Logger::getInstance().log(flightcontroller::E_LogLevel::INFO, __FILE__, __LINE__, __func__, msg)
-#define LOG_DEBUG(msg)   flightcontroller::Logger::getInstance().log(flightcontroller::E_LogLevel::DEBUG, __FILE__, __LINE__, __func__, msg)
+#define LOG_ERROR(msg)   flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::ERROR, __FILE__, __LINE__, __func__, msg)
+#define LOG_WARNING(msg) flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::WARNING, __FILE__, __LINE__, __func__, msg)
+#define LOG_INFO(msg)    flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::INFO, __FILE__, __LINE__, __func__, msg)
+#define LOG_DEBUG(msg)   flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::DEBUG, __FILE__, __LINE__, __func__, msg)
 
 } 

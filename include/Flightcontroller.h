@@ -1,15 +1,15 @@
-#pragma once 
-#include "ConfigManager.h"
-#include "logger.h"
-#include "RemoteControllHandler.h"
+// #pragma once 
+// #include "ConfigManager.h"
+// #include "logger.h"
+// #include "RemoteControllHandler.h"
 
-namespace flightcontroller{
-class Flightcontroller{
-public: 
+// namespace flightcontroller{
+// class Flightcontroller{
+// public: 
 
 
-private:
+// private:
 
-}
+// }
 
-}
+// }

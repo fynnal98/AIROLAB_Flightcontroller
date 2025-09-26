@@ -5,7 +5,7 @@ namespace flightcontroller{
 
 class RemoteControlHandler {
 public: 
-    static RemoteControlHandler& getInstance();
+    static RemoteControlHandler& GetInstance();
 
     void begin(int rxPin);
     void update();

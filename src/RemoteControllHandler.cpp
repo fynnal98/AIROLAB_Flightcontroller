@@ -5,13 +5,14 @@ namespace flightcontroller{
 
 RemoteControlHandler::RemoteControlHandler() : m_sbus(nullptr) {}
 
-RemoteControlHandler& RemoteControlHandler::getInstance(){
+RemoteControlHandler& RemoteControlHandler::GetInstance(){
     static RemoteControlHandler instance;
     return instance;
 }
 
 void RemoteControlHandler::begin(int rxPin) {
-    m_sbus = new bfs::SbusRx(&Serial2, rxPin, -1, true);
+    Serial1.begin(100000, SERIAL_8E2, rxPin, -1); // RX = rxPin, TX = nicht benutzt
+    m_sbus = new bfs::SbusRx(&Serial1, rxPin, -1, true);
     m_sbus->Begin();
     LOG_INFO("SBUS gestartet");
 }
