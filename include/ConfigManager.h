@@ -4,19 +4,20 @@
 #include <FS.h>
 #include <LittleFS.h>
 #include <Logger.h>
+#include <memory>
 
 namespace flightcontroller {
 
 class ConfigManager{
 public: 
-    static ConfigManager& GetInstance();
+    static std::shared_ptr<ConfigManager> GetInstance();
 
-    void printConfig();
+    void PrintConfig();
 
-    bool load(const char* path);
+    bool Load(const char* path);
 
     template<typename T> 
-    T get(const String& path, T defaultValue = T()){
+    T Get(const String& path, T defaultValue = T()){
         JsonVariant v = resolvePath(path);
         if (!v.isNull() && v.is<T>()) {
             return v.as<T>();

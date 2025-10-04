@@ -4,12 +4,14 @@ namespace flightcontroller {
 
 ConfigManager::ConfigManager() {}
 
-ConfigManager& ConfigManager::GetInstance() {
-    static ConfigManager instance;
+std::shared_ptr<ConfigManager> ConfigManager::GetInstance() {
+    static std::shared_ptr<ConfigManager> instance = nullptr;
+    if (!instance) {
+        instance = std::shared_ptr<ConfigManager>(new ConfigManager());
+    }
     return instance;
 }
-
-bool ConfigManager::load(const char* path) {
+bool ConfigManager::Load(const char* path) {
     if (!LittleFS.begin()){
         LOG_ERROR("LittleFS failed!");
         return false;
@@ -33,7 +35,7 @@ bool ConfigManager::load(const char* path) {
     return true;
 }
 
-void ConfigManager::printConfig() {
+void ConfigManager::PrintConfig() {
     LOG_INFO("Current Configuration:");
     serializeJsonPretty(m_doc, Serial);
     Serial.println();

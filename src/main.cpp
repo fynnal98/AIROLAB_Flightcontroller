@@ -1,8 +1,12 @@
 #include <Arduino.h>
+#include <WiFi.h>
+
 #include "ConfigManager.h"
+#include "Flightcontroller.h"
 #include "Logger.h"
 #include "RemoteControllHandler.h"
 #include "SensorManager.h"
+#include "TelemetryManager.h"
 
 
 using namespace flightcontroller;
@@ -15,43 +19,38 @@ void setup() {
     LOG_INFO("setup starting...");
 
     //Logger
-    Logger::GetInstance().SetLevel(E_LogLevel::DEBUG);
+    Logger::GetInstance()->SetLevel(E_LogLevel::DEBUG);
 
     //ConfigManager
-    if (!ConfigManager::GetInstance().load("/config.json")){
+    auto config = ConfigManager::GetInstance();
+
+    if (!config->Load("/config.json")){
         LOG_WARNING("Standart parameter used!");
     }
-    ConfigManager::GetInstance().printConfig();
+    delay(500);
+    config->PrintConfig();
+    delay(500);
 
-    //RemoteControlHandler
-    int sbus_rx = ConfigManager::GetInstance().get<int>("sbus/settings/rx");
-    RemoteControlHandler::GetInstance().begin(sbus_rx); 
+    // WiFi AP
+    String ssid = config->Get<String>("wifi/ssid");
+    String passwd = config->Get<String>("wifi/password");
 
-    //Sensorik
-    int sda = ConfigManager::GetInstance().get<int>("sensors/settings/sda");
-    int scl = ConfigManager::GetInstance().get<int>("sensors/settings/scl");
-    float seaLevel = ConfigManager::GetInstance().get<float>("sensors/settings/seaLevel");
-    SensorManager::GetInstance()->begin(sda, scl, seaLevel);
+    WiFi.mode(WIFI_AP);
+    WiFi.softAP(ssid.c_str(), passwd.c_str());
+
+    IPAddress ip = WiFi.softAPIP();
+    LOG_INFO("AP started. IP-Address: " + ip.toString());
+
+    // FC
+    Flightcontroller::GetInstance()->Begin();
 
     LOG_INFO("setup done___________________________");
 }
 
 void loop() {
-    //RemoteControlHandler 
-    RemoteControlHandler::GetInstance().update();
-
-    //Sensorik
-    auto sensorManager = SensorManager::GetInstance();
-
-    sensorManager->update();
-    auto gyroX = sensorManager->GetMPU()->GetGyroX();
-    auto gyroY = sensorManager->GetMPU()->GetGyroY();
-    auto gyroZ = sensorManager->GetMPU()->GetGyroZ();
-
-    LOG_DEBUG("GYRO| X: " + String(gyroX) + " Y: " + String(gyroY) + " Z: " + String(gyroZ));
-
-
+    Flightcontroller::GetInstance()->Update();
+    TelemetryManager::GetInstance()->SendTelemetryData();
+    
 
     delay(50);
-
 }

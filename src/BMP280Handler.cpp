@@ -14,7 +14,7 @@ std::shared_ptr<BMP280Handler> BMP280Handler::GetInstance() {
     return instance;
 }
 
-bool BMP280Handler::begin(int sdaPin, int sclPin, float seaLevelhPa) {
+bool BMP280Handler::Begin(int sdaPin, int sclPin, float seaLevelhPa) {
     m_seaLevelhPa = seaLevelhPa;
     if (!Wire.begin(sdaPin, sclPin)) {
         LOG_ERROR("I2C init failed!");
@@ -39,7 +39,7 @@ bool BMP280Handler::begin(int sdaPin, int sclPin, float seaLevelhPa) {
 
 }
 
-void BMP280Handler::update() {
+void BMP280Handler::Update() {
     m_temperature = m_bmp.readTemperature();
     m_pressure    = m_bmp.readPressure();                 // [Pa]
     m_altitude    = m_bmp.readAltitude(m_seaLevelhPa);      // [m]

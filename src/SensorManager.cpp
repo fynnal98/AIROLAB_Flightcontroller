@@ -14,24 +14,21 @@ std::shared_ptr<SensorManager> SensorManager::GetInstance() {
     return instance;
 }
 
-bool SensorManager::begin(int sda, int scl, float seaLevelhPa){
-    if (!m_mpu->begin(sda, scl)) {
+bool SensorManager::Begin(int sda, int scl, float seaLevelhPa){
+    if (!m_mpu->Begin(sda, scl)) {
         LOG_ERROR("MPU6050 init failed!");
         return false;
     }
-
-    if (!m_bmp->begin(sda, scl, seaLevelhPa)) {
+    if (!m_bmp->Begin(sda, scl, seaLevelhPa)) {
         LOG_ERROR("BMP280 init failed!");
         return false;
     }
 
-    LOG_INFO("All Sensors initialized");
-
     return true;
 
 }
-void SensorManager::update(){
-    m_mpu->update();
-    m_bmp->update();
+void SensorManager::Update(){
+    m_mpu->Update();
+    m_bmp->Update();
 }
 }

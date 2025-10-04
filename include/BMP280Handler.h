@@ -1,4 +1,6 @@
 #pragma once
+#include "Types.h"
+
 #include <Arduino.h>
 #include <Adafruit_BMP280.h> 
 #include <memory>
@@ -8,8 +10,8 @@ namespace flightcontroller {
 class BMP280Handler {
 public:
     static std::shared_ptr<BMP280Handler> GetInstance();
-    bool begin(int sdaPin, int sclPin, float seaLevelhPa);
-    void update(); 
+    bool Begin(int sdaPin, int sclPin, float seaLevelhPa);
+    void Update(); 
 
     float GetPressure() const{
         return m_pressure;
@@ -21,6 +23,9 @@ public:
         return m_altitude;
     }
 
+    BMPData GetSensorData() const{
+        return BMPData(m_pressure, m_temperature, m_altitude);
+    }
 
 private:
     BMP280Handler();

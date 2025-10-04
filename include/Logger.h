@@ -1,6 +1,7 @@
 #pragma once
 #include <Arduino.h>
 #include <string>
+#include <memory>
 
 namespace flightcontroller {
 
@@ -18,10 +19,15 @@ enum class E_LogLevel {
 class Logger {
 public:
     //Singleton
-    static Logger& GetInstance() {
-        static Logger instance;
+
+    static std::shared_ptr<Logger> GetInstance(){
+        static std::shared_ptr<Logger> instance = nullptr;
+        if(!instance){
+            instance = std::shared_ptr<Logger> (new Logger());
+        }
         return instance;
     }
+
     /// Set the LogLevel 
     void SetLevel(E_LogLevel level) { 
         m_level = level; 
@@ -72,9 +78,9 @@ private:
 };
 
 // Convenience-Makros
-#define LOG_ERROR(msg)   flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::ERROR, __FILE__, __LINE__, __func__, msg)
-#define LOG_WARNING(msg) flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::WARNING, __FILE__, __LINE__, __func__, msg)
-#define LOG_INFO(msg)    flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::INFO, __FILE__, __LINE__, __func__, msg)
-#define LOG_DEBUG(msg)   flightcontroller::Logger::GetInstance().Log(flightcontroller::E_LogLevel::DEBUG, __FILE__, __LINE__, __func__, msg)
+#define LOG_ERROR(msg)   flightcontroller::Logger::GetInstance()->Log(flightcontroller::E_LogLevel::ERROR, __FILE__, __LINE__, __func__, msg)
+#define LOG_WARNING(msg) flightcontroller::Logger::GetInstance()->Log(flightcontroller::E_LogLevel::WARNING, __FILE__, __LINE__, __func__, msg)
+#define LOG_INFO(msg)    flightcontroller::Logger::GetInstance()->Log(flightcontroller::E_LogLevel::INFO, __FILE__, __LINE__, __func__, msg)
+#define LOG_DEBUG(msg)   flightcontroller::Logger::GetInstance()->Log(flightcontroller::E_LogLevel::DEBUG, __FILE__, __LINE__, __func__, msg)
 
 } 

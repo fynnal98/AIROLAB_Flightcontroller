@@ -2,19 +2,42 @@
   "version": 1.0,
   "wifi": {
     "ssid": "aerolab",
-    "password": "12345678"
+    "password": "12345678",
+    "tx-port" : 5000
   },
   "sbus" : {
-    "setting": {
-      "rx":1
+    "settings": {
+      "rx": 20
     },
     "assign" : {
-      "roll": 6,
-      "pitch": 4,
+      "roll": 1,
+      "pitch": 2,
       "throttle": 3,
       "yaw" : 4,
       "flaps": 8,
       "positionlights": 9
+    }
+  },
+  "pin" : {
+    "control" : {
+      "aileronLh" : 4,
+      "aileronRh" : 5,
+      "elevator"  : 6
+    },
+    "light" : {
+      "position" : 22
+    }
+  },
+  "pid":{
+    "roll" : {
+      "kp": 0.1,
+      "ki" : 0.1,
+      "kd" : 0.1
+    },
+    "pitch" : {
+      "kp": 0.1,
+      "ki" : 0.1,
+      "kd" : 0.1
     }
   },
   "sensors": {

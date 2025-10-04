@@ -1,18 +1,20 @@
-#pragma once 
+#pragma once
+#include <Arduino.h>
+#include <memory> 
 #include <sbus.h>
 
 namespace flightcontroller{
 
 class RemoteControlHandler {
 public: 
-    static RemoteControlHandler& GetInstance();
+    static std::shared_ptr<RemoteControlHandler> GetInstance();
 
-    void begin(int rxPin);
-    void update();
+    bool Begin(int rxPin);
+    void Update();
 
-    int16_t getChannelRaw(int ch) const;
-    float getChannelNorm(int ch) const;
-    float getByName(const String& name) const;
+    int16_t GetChannelRaw(int ch) const;
+    float GetChannelNorm(int ch) const;
+    float GetByName(const String& name) const;
 
 
 private:

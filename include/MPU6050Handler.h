@@ -1,8 +1,11 @@
 #pragma once 
-#include <Arduino.h>
-#include <Wire.h>
 #include "Logger.h"
+#include "Types.h"
+
+#include <Arduino.h>
 #include <memory>
+#include <Wire.h>
+
 namespace flightcontroller{
 
 class MPU6050Handler{
@@ -15,8 +18,8 @@ public:
         return (m_tempRaw / TEMP_SCALE) + TEMP_OFFSET;
     }
     
-    bool begin(int sdaPin, int sclPin);
-    void update();
+    bool Begin(int sdaPin, int sclPin);
+    void Update();
 
     int16_t GetAccelX() const {
         return m_accelX;
@@ -30,6 +33,10 @@ public:
         return m_accelZ;
     }
 
+    MPUAccelleration GetAccelleration() const {
+        return MPUAccelleration(m_accelX, m_accelY, m_accelZ);
+    }
+
     int16_t GetGyroX() const {
         return m_gyroX;
     }
@@ -40,6 +47,10 @@ public:
 
     int16_t GetGyroZ() const {
         return m_gyroZ;
+    }
+
+    MPUGyro GetGyro() const{
+        return MPUGyro(m_gyroX, m_gyroY, m_gyroZ);
     }
 
 private:

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <memory>
 #include "MPU6050Handler.h"
 #include "BMP280Handler.h"
@@ -10,8 +9,8 @@ class SensorManager {
 public:
     static  std::shared_ptr<SensorManager> GetInstance();
 
-    bool begin(int sda, int scl, float seaLevelhPa);
-    void update();
+    bool Begin(int sda, int scl, float seaLevelhPa);
+    void Update();
     
     std::shared_ptr<MPU6050Handler> GetMPU() const { 
         return m_mpu; 
@@ -30,3 +29,4 @@ private:
 
 };
 }
+

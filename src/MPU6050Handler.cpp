@@ -7,7 +7,6 @@ MPU6050Handler::MPU6050Handler()
     : m_accelX(0), m_accelY(0), m_accelZ(0),
       m_gyroX(0), m_gyroY(0), m_gyroZ(0), m_tempRaw(0) {}
 
-
 std::shared_ptr<MPU6050Handler> MPU6050Handler::GetInstance() {
     static std::shared_ptr<MPU6050Handler> instance = nullptr;
     if (!instance)
@@ -15,8 +14,7 @@ std::shared_ptr<MPU6050Handler> MPU6050Handler::GetInstance() {
     return instance;
 }
 
-
-bool MPU6050Handler::begin(int sdaPin, int sclPin) {
+bool MPU6050Handler::Begin(int sdaPin, int sclPin) {
     if(!Wire.begin(sdaPin, sclPin)){
         LOG_ERROR("I2C init failed!");
         return false;
@@ -29,11 +27,28 @@ bool MPU6050Handler::begin(int sdaPin, int sclPin) {
         return false;
     }
 
+    Wire.beginTransmission(MPU6050_ADDR);
+    Wire.write(0x1B);      // Gyro Config
+    Wire.write(0x08);      // ±500°/s
+    Wire.endTransmission();
+
+    Wire.beginTransmission(MPU6050_ADDR);
+    Wire.write(0x1C);      // Accel Config
+    Wire.write(0x08);      // ±4g
+    Wire.endTransmission();
+
+    Wire.beginTransmission(MPU6050_ADDR);
+    Wire.write(0x1A);      // CONFIG Register
+    Wire.write(0x03);      // DLPF = 3 (BW ≈ 44Hz Gyro, 42Hz Accel)
+    Wire.endTransmission();
+
+    delay(100);
+
     LOG_INFO("MPU6050 initialized");
     return true;
 }
 
-void MPU6050Handler::update() {
+void MPU6050Handler::Update() {
     Wire.beginTransmission(MPU6050_ADDR);
     Wire.write(REG_ACCEL_XOUT_H);
     Wire.endTransmission(false);
