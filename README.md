@@ -1,7 +1,1 @@
 # AIROLAB Flightcontroller
-
-## Struktur
-
-
-## Klassendiagramm
-
